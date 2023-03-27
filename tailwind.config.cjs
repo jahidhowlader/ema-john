@@ -13,7 +13,7 @@ module.exports = {
       'border-clr': '#95A0A7',
       'text-primary': '#0E161A',
       'text-secondary': '#2A414F',
-      'gray': '#8492a6',
+      'red': '#FF3030',
       'gray-light': '#d3dce6',
     }
   },
