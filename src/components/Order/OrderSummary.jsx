@@ -5,26 +5,16 @@ import './orderSummary.css'
 
 const OrderSummary = (props) => {
 
-    const totalPrice = props.children.map(price => price.price).reduce((privious, current) => privious + current, 0)
+    let totalPrice = 0;
+    let shippingPrice = 0;
 
-    let shippingCharge;
-
-    if (totalPrice == 0) {
-        shippingCharge = 0
-    }else if (totalPrice < 1000) {
-        shippingCharge = 5
-    } else if (totalPrice < 10000) {
-        shippingCharge = 30
-    } else if (totalPrice > 10000) {
-        shippingCharge = 50
+    for (let product of props.children) {
+        totalPrice += product.price
+        shippingPrice += product.shipping
     }
 
     const tax = totalPrice * .07
-    const grandTotal = tax + totalPrice + shippingCharge
-
-
-
-    console.log(tax);
+    const grandTotal = tax + totalPrice + shippingPrice
 
     return (
         <div className='bg-cart h-full relative p-5 order-summary'>
@@ -32,7 +22,7 @@ const OrderSummary = (props) => {
                 <h5 className='text-2xl text-center py-7 text-bold'>Order Summary</h5>
                 <p>Selected Items: {props.children.length}</p>
                 <p>Total Price: ${totalPrice}</p>
-                <p>Total Shipping Charge: ${shippingCharge.toFixed(2)}</p>
+                <p>Total Shipping Charge: ${shippingPrice}</p>
                 <p>Tax: ${tax.toFixed(2)}</p>
                 <h6 className='text-2xl'>Grand Total: ${grandTotal.toFixed(2)}</h6>
 

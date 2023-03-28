@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { addToDB } from '../../../utilities/initialDB';
 import OrderSummary from '../Order/OrderSummary';
 import Product from '../Product/Product';
 import './Shop.css'
@@ -17,7 +18,8 @@ const Shop = () => {
 
     const addToCart = (product) => {
         setCart([...cart, product])
-        // console.log(cart);
+        addToDB(product.id)
+        // console.log(product.id);
     }
 
     return (
