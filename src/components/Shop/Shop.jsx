@@ -1,73 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { addToDB } from '../../../utilities/initialDB';
-import OrderSummary from '../Order/OrderSummary';
 import Product from '../Product/Product';
-import './Shop.css'
+
+import { getShoppingList, setLocalStorage } from '../../../utilities/initialDB';
+import OrderSummary from '../Order/OrderSummary';
+
 
 const Shop = () => {
 
-    const [products, setProducts] = useState([])
-
+    const [products, setProducts] = useState([]) 
     useEffect(() => {
-        fetch('products.json')
-            .then(res => res.json())
-            .then(data => setProducts(data))
-    }, [])
-
-
-    const addToCart = (product) => {
-        // setCart([...cart, product])
-        addToDB(product.id)
-        // console.log(cart);
-    }
-
-    const [cart, setCart] = useState([])
-    useEffect(() => {
-        const findDataFromLocally = JSON.parse(localStorage.getItem('shopping-cart'))
-
-        let productDetails = []
-
-        for (const id in findDataFromLocally) {
-            const addProduct = products.find(product => product.id === id)
-
-            if (addProduct) {
-
-                addProduct.quantity = findDataFromLocally[id]
-                productDetails.push(addProduct)
-                setCart(productDetails)
-            }
-            // console.log(addProduct);
+        const loadData = async () => {
+            const res = await fetch('products.json')
+            const data = await res.json()
+            setProducts(data);
         }
+        loadData()
+    }, [])
+    
+    const [cart, setCart] = useState([])
+    const updateSelectiveProduct = getShoppingList()
+    useEffect(() => {
+        const cartListFromLocalStorage = getShoppingList()
 
+        let totalproductList = []
 
-        // for(const id in findDataFromLocally){
+        for (const id in cartListFromLocalStorage) {
 
-        //     const test = addProduct.quantity || 1
-        //     console.log(test);
-        //     console.log(findDataFromLocally[id]);
-        //     // addProduct.quantity = findDataFromLocally[id]
-        //     productDetails.push(addProduct)
-        //     setCart(productDetails)
-        // }
+            const selectedProduct = products.find(product => product.id === id)
+            if(selectedProduct){
+                selectedProduct.quantity = cartListFromLocalStorage[id]
+            }
 
-        // console.log(findDataFromLocally);
-        // console.log(products);
-    }, [products])
+            totalproductList.push(selectedProduct)
+        }
+        setCart(totalproductList)
+
+    }, [products, updateSelectiveProduct])
+
+    const addToCart = (id) => {
+
+        setLocalStorage(id)
+    }
 
     return (
         <div className='grid grid-cols-5'>
-            <div className='col-span-4 my-12'>
-                <div className='grid grid-cols-3 gap-11 mx-28'>
+
+            <div className='col-span-4'>
+                <div className='grid grid-cols-3 gap-12 m-14'>
                     {
-                        products.map(product => <Product key={product.id} product={product} addToCart={addToCart}></Product>
-                        )
+                        products.map(product => <Product
+                            key={product.id}
+                            product={product}
+                            addToCart={addToCart}
+                        ></Product>)
                     }
                 </div>
             </div>
-            <div className=''>
-                <OrderSummary>{cart}</OrderSummary>
-            </div>
 
+            <div>
+                <OrderSummary cart={cart}></OrderSummary>
+            </div>
         </div>
     );
 };
