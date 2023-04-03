@@ -23,7 +23,6 @@ const OrderSummary = (props) => {
             totalPrice = totalPrice + (product.price * product.quantity)
             shippingCharge = shippingCharge + (product.quantity * product.shipping)
         }
-        console.log(product);
     }
 
     const tax = totalPrice * .07
