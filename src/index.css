@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.active {
+  @apply text-secondary border-b pb-2 font-bold
+}
+
 /* ------------------------
         Google Fonts
 ------------------------*/

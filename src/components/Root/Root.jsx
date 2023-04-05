@@ -7,7 +7,6 @@ const Root = () => {
     return (
         <div>
             <Header></Header>
-            {/* <Shop></Shop> */}
             <Outlet></Outlet>
         </div>
     );

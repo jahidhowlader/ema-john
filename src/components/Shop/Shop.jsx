@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Product from '../Product/Product';
 
-import { getShoppingList, setLocalStorage } from '../../../utilities/initialDB';
+import { clearCart, getShoppingList, setLocalStorage } from '../../../utilities/initialDB';
 import OrderSummary from '../Order/OrderSummary';
+import { addToDb } from '../../../utilities/fakedb';
 
 
 const Shop = () => {
 
-    const [products, setProducts] = useState([]) 
+    // load data from products.json
+    const [products, setProducts] = useState([])
     useEffect(() => {
         const loadData = async () => {
             const res = await fetch('products.json')
@@ -16,30 +18,39 @@ const Shop = () => {
         }
         loadData()
     }, [])
-    
+
+    // get product from products.json by id
     const [cart, setCart] = useState([])
-    const updateSelectiveProduct = getShoppingList()
     useEffect(() => {
-        const cartListFromLocalStorage = getShoppingList()
+        const storeCart = getShoppingList()
 
-        let totalproductList = []
+        const savedProduct = []
+        for (const id in storeCart) {
+            const singleProduct = products.find(product => product.id === id)
 
-        for (const id in cartListFromLocalStorage) {
-
-            const selectedProduct = products.find(product => product.id === id)
-            if(selectedProduct){
-                selectedProduct.quantity = cartListFromLocalStorage[id]
+            if (singleProduct) {
+                const quantity = storeCart[id]
+                singleProduct.quantity = quantity
+                savedProduct.push(singleProduct)
             }
-
-            totalproductList.push(selectedProduct)
         }
-        setCart(totalproductList)
 
-    }, [products, updateSelectiveProduct])
+        setCart(savedProduct)
 
-    const addToCart = (id) => {
+    }, [products])
+    
+    // Click to add product and set local storage
+    const addToCart = (product) => {
 
-        setLocalStorage(id)
+        const newCart = [...cart, product]
+        setCart(newCart)
+        setLocalStorage(product.id)
+    }
+
+    // click to remove all item from cart
+    const removeProducts = _ => {
+        const removeProducts = clearCart()
+        setCart([])
     }
 
     return (
@@ -58,7 +69,10 @@ const Shop = () => {
             </div>
 
             <div>
-                <OrderSummary cart={cart}></OrderSummary>
+                <OrderSummary 
+                cart={cart}
+                removeProducts={removeProducts}
+                ></OrderSummary>
             </div>
         </div>
     );

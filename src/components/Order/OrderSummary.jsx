@@ -3,26 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faCreditCard } from '@fortawesome/free-solid-svg-icons'
 import { clearCart } from '../../../utilities/initialDB';
 
-const OrderSummary = (props) => {
-
-    const products = props.cart
+const OrderSummary = ({ cart, removeProducts }) => {
 
     let seletedItem = 0
     let totalPrice = 0
     let shippingCharge = 0
+    
+    for (const product of cart) {
 
-    for(const product of products){
-        if(product){
-            if(product. quantity === 0) {
-                product.quantity = 1
-            }
-
-            // product.quantity = product.quantity || 1
-
-            seletedItem = seletedItem + product.quantity
-            totalPrice = totalPrice + (product.price * product.quantity)
-            shippingCharge = shippingCharge + (product.quantity * product.shipping)
-        }
+        product.quantity = product.quantity || 1
+        totalPrice = totalPrice + product.price * product.quantity
+        shippingCharge = shippingCharge + product.shipping
+        seletedItem = seletedItem + product.quantity
     }
 
     const tax = totalPrice * .07
@@ -38,7 +30,7 @@ const OrderSummary = (props) => {
                 <p>Tax: ${tax.toFixed(2)}</p>
                 <h6 className='text-2xl'>Grand Total: ${grandTotal.toFixed(2)}</h6>
 
-                <button onClick={() => clearCart()} className='bg-red w-full text-white mt-12 py-3 rounded-lg'>Clear Cart
+                <button onClick={() => removeProducts()} className='bg-red w-full text-white mt-12 py-3 rounded-lg'>Clear Cart
                     <FontAwesomeIcon className='pl-3' icon={faTrashCan} />
                 </button>
                 <button className='bg-secondary w-full text-white mt-4 py-3 rounded-lg'>
