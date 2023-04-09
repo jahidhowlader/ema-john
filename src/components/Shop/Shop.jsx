@@ -3,6 +3,9 @@ import Product from '../Product/Product';
 
 import { clearCart, getShoppingList, setLocalStorage } from '../../../utilities/initialDB';
 import OrderSummary from '../Order/OrderSummary';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const Shop = () => {
 
@@ -45,7 +48,8 @@ const Shop = () => {
         setLocalStorage(product.id)
     }
 
-    const removeAll = _ => {
+    const handleClearCart = _ => {
+        setCart([])
         clearCart()
     }
 
@@ -67,7 +71,15 @@ const Shop = () => {
             <div>
                 <OrderSummary
                     cart={cart}
-                ></OrderSummary>
+                    handleClearCart={handleClearCart}
+                >
+                    <Link to='/order'>
+                        <button className='bg-secondary w-full text-white mt-4 py-3 rounded-lg'>
+                            Review Order
+                            <FontAwesomeIcon className='pl-3' icon={faArrowRight} />
+                        </button>
+                    </Link>
+                </OrderSummary>
             </div>
         </div>
     );

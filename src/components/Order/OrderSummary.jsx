@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faCreditCard } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { clearCart } from '../../../utilities/initialDB';
 import { Link } from 'react-router-dom';
 
-const OrderSummary = ({ cart, removeProducts }) => {
+const OrderSummary = ({ cart, handleClearCart, children}) => {
 
     let seletedItem = 0
     let totalPrice = 0
@@ -31,15 +31,10 @@ const OrderSummary = ({ cart, removeProducts }) => {
                 <p>Tax: ${tax.toFixed(2)}</p>
                 <h6 className='text-2xl'>Grand Total: ${grandTotal.toFixed(2)}</h6>
 
-                <button onClick={() => removeProducts()} className='bg-red w-full text-white mt-12 py-3 rounded-lg'>Clear Cart
+                <button onClick={handleClearCart} className='bg-red w-full text-white mt-12 py-3 rounded-lg'>Clear Cart
                     <FontAwesomeIcon className='pl-3' icon={faTrashCan} />
                 </button>
-                <Link to='/order'>
-                    <button className='bg-secondary w-full text-white mt-4 py-3 rounded-lg'>
-                        Proceed Checkout
-                        <FontAwesomeIcon className='pl-3' icon={faCreditCard} />
-                    </button>
-                </Link>
+                {children}
             </div>
         </div>
     );
