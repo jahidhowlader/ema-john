@@ -21,6 +21,14 @@ const setLocalStorage = (id) => {
     localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart))
 }
 
+const removeFromDb = id => {
+    const shoppingCart = getShoppingList();
+    if (id in shoppingCart) {
+        delete shoppingCart[id];
+        localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
+    }
+}
+
 const clearCart = _ => {
     localStorage.removeItem('shopping-cart')
 }
@@ -28,5 +36,6 @@ const clearCart = _ => {
 export {
     getShoppingList,
     setLocalStorage,
-    clearCart
+    clearCart,
+    removeFromDb
 }

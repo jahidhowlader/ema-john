@@ -3,8 +3,6 @@ import Product from '../Product/Product';
 
 import { clearCart, getShoppingList, setLocalStorage } from '../../../utilities/initialDB';
 import OrderSummary from '../Order/OrderSummary';
-import { addToDb } from '../../../utilities/fakedb';
-
 
 const Shop = () => {
 
@@ -38,7 +36,7 @@ const Shop = () => {
         setCart(savedProduct)
 
     }, [products])
-    
+
     // Click to add product and set local storage
     const addToCart = (product) => {
 
@@ -47,17 +45,15 @@ const Shop = () => {
         setLocalStorage(product.id)
     }
 
-    // click to remove all item from cart
-    const removeProducts = _ => {
-        const removeProducts = clearCart()
-        setCart([])
+    const removeAll = _ => {
+        clearCart()
     }
 
     return (
-        <div className='grid grid-cols-5'>
+        <div className='grid md:grid-cols-4 lg:grid-cols-5'>
 
-            <div className='col-span-4'>
-                <div className='grid grid-cols-3 gap-12 m-14'>
+            <div className='md:col-span-3 lg:col-span-4'>
+                <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-12 m-14'>
                     {
                         products.map(product => <Product
                             key={product.id}
@@ -69,9 +65,8 @@ const Shop = () => {
             </div>
 
             <div>
-                <OrderSummary 
-                cart={cart}
-                removeProducts={removeProducts}
+                <OrderSummary
+                    cart={cart}
                 ></OrderSummary>
             </div>
         </div>

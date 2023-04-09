@@ -2,18 +2,19 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faCreditCard } from '@fortawesome/free-solid-svg-icons'
 import { clearCart } from '../../../utilities/initialDB';
+import { Link } from 'react-router-dom';
 
 const OrderSummary = ({ cart, removeProducts }) => {
 
     let seletedItem = 0
     let totalPrice = 0
     let shippingCharge = 0
-    
+
     for (const product of cart) {
 
         product.quantity = product.quantity || 1
         totalPrice = totalPrice + product.price * product.quantity
-        shippingCharge = shippingCharge + product.shipping
+        shippingCharge = shippingCharge + (product.shipping * product.quantity)
         seletedItem = seletedItem + product.quantity
     }
 
@@ -33,10 +34,12 @@ const OrderSummary = ({ cart, removeProducts }) => {
                 <button onClick={() => removeProducts()} className='bg-red w-full text-white mt-12 py-3 rounded-lg'>Clear Cart
                     <FontAwesomeIcon className='pl-3' icon={faTrashCan} />
                 </button>
-                <button className='bg-secondary w-full text-white mt-4 py-3 rounded-lg'>
-                    Proceed Checkout
-                    <FontAwesomeIcon className='pl-3' icon={faCreditCard} />
-                </button>
+                <Link to='/order'>
+                    <button className='bg-secondary w-full text-white mt-4 py-3 rounded-lg'>
+                        Proceed Checkout
+                        <FontAwesomeIcon className='pl-3' icon={faCreditCard} />
+                    </button>
+                </Link>
             </div>
         </div>
     );
