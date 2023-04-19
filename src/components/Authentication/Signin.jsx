@@ -1,7 +1,7 @@
 import { faG } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../provider/AuthProvider';
 
 const Signin = () => {
@@ -10,6 +10,11 @@ const Signin = () => {
 
     const [error, setError] = useState('')
     const nevigate = useNavigate()
+
+    let location  = useLocation()
+    console.log(location);
+
+    const from = location.state?.from?.pathname
 
     const handlerSignin = event => {
         event.preventDefault()
@@ -24,6 +29,7 @@ const Signin = () => {
                 const user = userCredential.user
                 console.log(user);
                 form.reset()
+                nevigate(from)
             }).catch(e => setError(e.message))
 
     }
