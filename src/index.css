@@ -1,3 +1,9 @@
+/* ------------------------
+        Google Fonts
+------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,10 +12,6 @@
   @apply text-secondary border-b pb-2 font-bold
 }
 
-/* ------------------------
-        Google Fonts
-------------------------*/
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
 
 body {

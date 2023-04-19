@@ -15,6 +15,7 @@ module.exports = {
       'text-secondary': '#2A414F',
       'red': '#FF3030',
       'gray-light': '#d3dce6',
+      'blue': '#0EA5E9'
     }
   },
   plugins: [],
